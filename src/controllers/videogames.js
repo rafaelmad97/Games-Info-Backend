@@ -1,4 +1,4 @@
-const { Videogames, Favorites, Genres } = require("../db.js");
+const { Videogames, Favorites } = require("../db.js");
 
 async function fetchApiVideogames() {
   const values = await fetch(
@@ -9,8 +9,7 @@ async function fetchApiVideogames() {
   )
     .then((response) => response.json())
     .catch((error) => {
-      console.log(error);
-      throw Error(error.message);
+      throw new Error(error.message);
     })
     .finally();
   return values.results;
@@ -21,8 +20,7 @@ async function fetchDBVideogames() {
     const videogames = await Videogames.findAll();
     return videogames;
   } catch (exception) {
-    console.log(exception);
-    throw Error(exception);
+    throw new Error(exception);
   }
 }
 
@@ -35,9 +33,10 @@ async function fetchApiVideogamesbyid(id) {
   )
     .then((response) => response.json())
     .catch((error) => {
-      throw Error(error);
+      throw new Error(error.message);
     })
     .finally();
+
   return values;
 }
 
