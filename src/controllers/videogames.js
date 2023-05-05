@@ -2,14 +2,15 @@ const { Videogames, Favorites, Genres } = require("../db.js");
 
 async function fetchApiVideogames() {
   const values = await fetch(
-    `https://api.rawg.io/api/games?key=${process.env.API_KEY}&page_size=100`,
+    `https://api.rawg.io/api/games?key=${process.env.API_KEY}`,
     {
       method: "GET",
     }
   )
     .then((response) => response.json())
     .catch((error) => {
-      throw Error(error);
+      console.log(error.message);
+      throw Error(error.message);
     })
     .finally();
   return values.results;
