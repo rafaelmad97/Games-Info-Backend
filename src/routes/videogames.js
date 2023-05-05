@@ -36,10 +36,13 @@ async function getVideoGamesbyId(req, res) {
   // }
   Promise.all([
     fetchApiVideogamesbyid(idVideogame),
-    fetchDbVideogamesbyid(idVideogame),
+    // fetchDbVideogamesbyid(idVideogame),
   ])
     .then((response) =>
-      res.status(200).json({ api: response[0], db: response[1] })
+      res.status(200).json({
+        api: response[0],
+        //, db: response[1]
+      })
     )
     .catch((error) => res.status(500).json({ e: error }))
     .finally();
