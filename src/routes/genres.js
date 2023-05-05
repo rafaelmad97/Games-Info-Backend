@@ -5,7 +5,7 @@ async function getGenres(req, res) {
     const genres = await fetchGenres();
     res.status(200).json({ okay: true, genres });
   } catch (e) {
-    res.status(200).json({ ohnow: true });
+    res.status(500).json({ ohnow: true });
   }
 }
 
