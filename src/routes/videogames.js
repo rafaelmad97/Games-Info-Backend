@@ -18,7 +18,7 @@ async function getVideogames(req, res) {
     } else {
       // const db = await fetchVideogameDbbyName(name);
       // const api = await fetchVideogameApibyName(name);
-      res.status(200).json({ api: api, db: db, name });
+      res.status(200).json({ api: "this api", db: "this db", name });
     }
   } catch (error) {
     res.status(500).json(error);
