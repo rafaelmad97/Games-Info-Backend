@@ -41,7 +41,7 @@ async function getVideoGamesbyId(req, res) {
         //, db: response[1]
       })
     )
-    .catch((error) => res.status(500).json({ e: JSON.stringify(error) }))
+    .catch((error) => res.status(500).json({ error: JSON.stringify(error) }))
     .finally();
 }
 async function postVideogame(req, res) {
