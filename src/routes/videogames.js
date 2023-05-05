@@ -18,7 +18,7 @@ async function getVideogames(req, res) {
     } else {
       const db = await fetchVideogameDbbyName(name);
       // const api = await fetchVideogameApibyName(name);
-      res.status(200).json({ api: `${process.env.API_KEY}`, db: db, name });
+      res.status(200).json({ api: process.env.API_KEY, db: db, name });
     }
   } catch (error) {
     res.status(500).json(error);
