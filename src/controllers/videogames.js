@@ -1,18 +1,23 @@
 const { Videogames, Favorites } = require("../db.js");
 
 async function fetchApiVideogames() {
-  const values = await fetch(
+  return await fetch(
     `https://api.rawg.io/api/games?key=${process.env.API_KEY}`,
     {
       method: "GET",
     }
   )
-    .then((response) => response.json())
-    .catch((error) => {
-      throw new Error(error.message);
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
     })
+    .then((response) => response.results)
+    .catch((e) => ({
+      error: e.message,
+    }))
     .finally();
-  return values.results;
 }
 
 async function fetchDBVideogames() {
@@ -25,19 +30,23 @@ async function fetchDBVideogames() {
 }
 
 async function fetchApiVideogamesbyid(id) {
-  const values = await fetch(
+  return await fetch(
     `https://api.rawg.io/api/games/${id}?key=${process.env.API_KEY}`,
     {
       method: "GET",
     }
   )
-    .then((response) => response.json())
-    .catch((error) => {
-      throw new Error(error.message);
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
     })
+    .then((response) => response)
+    .catch((e) => ({
+      error: e.message,
+    }))
     .finally();
-
-  return values;
 }
 
 async function fetchDbVideogamesbyid(id) {
@@ -54,17 +63,22 @@ async function fetchDbVideogamesbyid(id) {
 }
 
 async function fetchVideogameApibyName(nombre) {
-  const values = await fetch(
+  return await fetch(
     `https://api.rawg.io/api/games?key=${
       process.env.API_KEY
     }&search=${nombre.toLowerCase()}`
   )
-    .then((response) => response.json())
-    .catch((error) => {
-      throw Error(error);
-    });
-  console.log(values.results.slice(0, 15).length);
-  return values.results.slice(0, 15);
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .then((response) => response.results.slice(0, 15))
+    .catch((e) => ({
+      error: e.message,
+    }))
+    .finally();
 }
 
 async function fetchVideogameDbbyName(nombre) {

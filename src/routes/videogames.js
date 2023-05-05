@@ -17,7 +17,7 @@ async function getVideogames(req, res) {
       res.status(200).json({ api: api, db: db, name });
     } else {
       const db = await fetchVideogameDbbyName(name);
-      api = await fetchVideogameApibyName(name);
+      const api = await fetchVideogameApibyName(name);
       res.status(200).json({ api: api, db: db, name });
     }
   } catch (error) {
@@ -32,7 +32,7 @@ async function getVideoGamesbyId(req, res) {
     const db = await fetchDbVideogamesbyid(idVideogame);
     res.status(200).json({ api, db });
   } catch (error) {
-    res.status(500).json(error.message);
+    res.status(500).json(error);
   }
 }
 async function postVideogame(req, res) {
