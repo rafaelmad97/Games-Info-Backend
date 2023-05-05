@@ -34,17 +34,14 @@ async function getVideoGamesbyId(req, res) {
   // } catch (error) {
   //   res.status(500).json(error);
   // }
-  Promise.all([
-    fetchApiVideogamesbyid(idVideogame),
-    // fetchDbVideogamesbyid(idVideogame),
-  ])
+  Promise.all([fetchApiVideogamesbyid(idVideogame)])
     .then((response) =>
       res.status(200).json({
         api: response[0],
         //, db: response[1]
       })
     )
-    .catch((error) => res.status(500).json({ e: error }))
+    .catch((error) => res.status(500).json({ e: JSON.stringify(error) }))
     .finally();
 }
 async function postVideogame(req, res) {
