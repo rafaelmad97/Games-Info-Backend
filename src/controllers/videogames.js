@@ -9,7 +9,7 @@ async function fetchApiVideogames() {
   )
     .then((response) => response.json())
     .catch((error) => {
-      console.log(error.message);
+      console.log(error);
       throw Error(error.message);
     })
     .finally();
@@ -21,6 +21,7 @@ async function fetchDBVideogames() {
     const videogames = await Videogames.findAll();
     return videogames;
   } catch (exception) {
+    console.log(exception);
     throw Error(exception);
   }
 }
