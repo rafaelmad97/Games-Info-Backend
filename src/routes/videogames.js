@@ -27,22 +27,13 @@ async function getVideogames(req, res) {
 
 async function getVideoGamesbyId(req, res) {
   const { idVideogame } = req.params;
-  // try {
-  //   const api = await fetchApiVideogamesbyid(idVideogame);
-  //   const db = await fetchDbVideogamesbyid(idVideogame);
-  //   res.status(200).json({ api, db });
-  // } catch (error) {
-  //   res.status(500).json(error);
-  // }
-  Promise.all([await fetchApiVideogamesbyid(idVideogame)])
-    .then((response) =>
-      res.status(200).json({
-        api: response[0],
-        //, db: response[1]
-      })
-    )
-    .catch((error) => res.status(500).json({ error: JSON.stringify(error) }))
-    .finally();
+  try {
+    const db = await fetchDbVideogamesbyid(idVideogame);
+    const api = await fetchApiVideogamesbyid(idVideogame);
+    res.status(200).json({ api, db });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 }
 async function postVideogame(req, res) {
   try {

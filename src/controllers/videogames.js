@@ -21,12 +21,14 @@ async function fetchApiVideogames() {
 }
 
 async function fetchDBVideogames() {
-  try {
-    const videogames = await Videogames.findAll();
-    return videogames;
-  } catch (exception) {
-    throw new Error(exception);
-  }
+  await Videogames.findAll()
+    .then((result) => {
+      return result;
+    })
+    .catch(() => ({
+      error: "error al obtener los datos en la base de datos",
+    }))
+    .finally();
 }
 
 async function fetchApiVideogamesbyid(id) {
@@ -50,16 +52,18 @@ async function fetchApiVideogamesbyid(id) {
 }
 
 async function fetchDbVideogamesbyid(id) {
-  try {
-    const videogame = await Videogames.findAll({
-      where: {
-        id: id,
-      },
-    });
-    return videogame;
-  } catch (exception) {
-    throw Error(exception);
-  }
+  return await Videogames.findAll({
+    where: {
+      id: id,
+    },
+  })
+    .then((result) => {
+      return result;
+    })
+    .catch(() => ({
+      error: "error al obtener los datos en la base de datos",
+    }))
+    .finally();
 }
 
 async function fetchVideogameApibyName(nombre) {
@@ -82,33 +86,40 @@ async function fetchVideogameApibyName(nombre) {
 }
 
 async function fetchVideogameDbbyName(nombre) {
-  try {
-    const videogame = await Videogames.findAll(
-      {
-        where: {
-          nombre: `${nombre.toLowerCase()}`,
-        },
+  return await Videogames.findAll(
+    {
+      where: {
+        nombre: `${nombre.toLowerCase()}`,
       },
-      { limit: 15 }
-    );
-    return videogame;
-  } catch (exception) {
-    throw Error(exception);
-  }
+    },
+    { limit: 15 }
+  )
+    .then((result) => {
+      return result;
+    })
+    .catch(() => ({
+      error: "error al obtener los datos en la base de datos",
+    }))
+    .finally();
 }
 
 async function createVideoGame(values) {
-  try {
-    const { game, genres } = values;
-    await Videogames.create({ ...game });
-    const favorites = genres.map((idgenre) => {
-      return { id_videogame: game.id, id_genres: idgenre };
-    });
-    await Favorites.bulkCreate(favorites);
-    return values;
-  } catch (e) {
-    throw Error(e.message);
-  }
+  const { game, genres } = values;
+  return await Videogames.create({ ...game })
+    .then(async (res) => {
+      const favorites = genres.map((idgenre) => {
+        return { id_videogame: game.id, id_genres: idgenre };
+      });
+      await Favorites.bulkCreate(favorites);
+      return {
+        game,
+        genres,
+      };
+    })
+    .catch(() => ({
+      error: "error al obtener los datos en la base de datos",
+    }))
+    .finally();
 }
 
 module.exports = {
