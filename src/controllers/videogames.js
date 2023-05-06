@@ -1,4 +1,5 @@
 const { Videogames, Favorites } = require("../db.js");
+
 async function fetchApiVideogames() {
   return await fetch(
     `https://api.rawg.io/api/games?key=${process.env.API_KEY}`,
@@ -66,24 +67,29 @@ async function fetchDbVideogamesbyid(id) {
 }
 
 async function fetchVideogameApibyName(nombre) {
-  const url =
-    "https://api.rawg.io/api/games?key=" +
-    process.env.API_KEY +
-    "&search=" +
-    nombre.toLowerCase();
-
-  return await fetch(url, { method: "GET" })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(response.statusText);
-    })
-    .then((response) => response.results)
-    .catch((e) => ({
-      error: e.message,
-    }))
-    .finally();
+  const values = await fetch(
+    `https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${nombre}`,
+    {
+      method: "GET",
+    }
+  ).then((response) => response.json());
+  try {
+    return values.results;
+  } catch (e) {
+    return { e: "error" };
+  }
+  // return await fetch(url, { method: "GET" })
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       return response.json();
+  //     }
+  //     throw new Error(response.statusText);
+  //   })
+  //   .then((response) => response.results)
+  //   .catch((e) => ({
+  //     error: e.message,
+  //   }))
+  //   .finally();
 }
 
 async function fetchVideogameDbbyName(nombre) {
