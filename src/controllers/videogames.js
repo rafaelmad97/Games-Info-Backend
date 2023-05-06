@@ -1,4 +1,5 @@
 const { Videogames, Favorites } = require("../db.js");
+const fetch = require("node-fetch");
 
 async function fetchApiVideogames() {
   return await fetch(
