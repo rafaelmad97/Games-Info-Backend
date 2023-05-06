@@ -68,14 +68,12 @@ async function fetchDbVideogamesbyid(id) {
 
 async function fetchVideogameApibyName(nombre) {
   return await fetch(
-    `https://api.rawg.io/api/games?key=${
-      process.env.API_KEY
-    }&search=${nombre.toLowerCase()}`,
+    "https://api.rawg.io/api/games?key=" +
+      process.env.API_KEY +
+      "&search=" +
+      nombre.toLowerCase(),
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
     }
   )
     .then((response) => {
