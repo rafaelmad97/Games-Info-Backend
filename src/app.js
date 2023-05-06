@@ -17,7 +17,7 @@ server.use(morgan("dev"));
 server.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
-    process.env.EN === "Develop"
+    process.env.ENV === "Develop"
       ? "http://localhost:3000"
       : "https://gamespiwebapp-production.up.railway.app/"
   ); // update to match the domain you will make the request from
