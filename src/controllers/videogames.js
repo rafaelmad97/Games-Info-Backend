@@ -1,8 +1,11 @@
 const { Videogames, Favorites } = require("../db.js");
-function fetchApiVideogames() {
-  return fetch(`https://api.rawg.io/api/games?key=${process.env.API_KEY}`, {
-    method: "GET",
-  })
+async function fetchApiVideogames() {
+  return await fetch(
+    `https://api.rawg.io/api/games?key=${process.env.API_KEY}`,
+    {
+      method: "GET",
+    }
+  )
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -16,8 +19,8 @@ function fetchApiVideogames() {
     .finally();
 }
 
-function fetchDBVideogames() {
-  Videogames.findAll()
+async function fetchDBVideogames() {
+  await Videogames.findAll()
     .then((result) => {
       return result;
     })
@@ -27,8 +30,8 @@ function fetchDBVideogames() {
     .finally();
 }
 
-function fetchApiVideogamesbyid(id) {
-  return fetch(
+async function fetchApiVideogamesbyid(id) {
+  return await fetch(
     `https://api.rawg.io/api/games/${id}?key=${process.env.API_KEY}`,
     {
       method: "GET",
@@ -47,8 +50,8 @@ function fetchApiVideogamesbyid(id) {
     .finally();
 }
 
-function fetchDbVideogamesbyid(id) {
-  return Videogames.findAll({
+async function fetchDbVideogamesbyid(id) {
+  return await Videogames.findAll({
     where: {
       id: id,
     },
@@ -62,29 +65,23 @@ function fetchDbVideogamesbyid(id) {
     .finally();
 }
 
-function fetchVideogameApibyName(nombre) {
+async function fetchVideogameApibyName(nombre) {
   const url =
     "https://api.rawg.io/api/games?key=" +
     process.env.API_KEY +
     "&search=" +
     nombre.toLowerCase();
   console.log("init fetch", url);
-  return fetch("https://api.github.com/users/xiaotian/repos")
-    .then(
-      (resp) => resp.json() // this returns a promise
-    )
-    .then((repos) => {
-      for (const repo of repos) {
-        console.log(repo.name);
-      }
-    })
+  return await fetch("https://api.github.com/users/xiaotian/repos")
+    .then((resp) => resp.json())
+    .then((repos) => repos)
     .catch((ex) => {
       console.error(ex);
     });
 }
 
-function fetchVideogameDbbyName(nombre) {
-  return Videogames.findAll(
+async function fetchVideogameDbbyName(nombre) {
+  return await Videogames.findAll(
     {
       where: {
         nombre: `${nombre.toLowerCase()}`,
@@ -101,9 +98,9 @@ function fetchVideogameDbbyName(nombre) {
     .finally();
 }
 
-function createVideoGame(values) {
+async function createVideoGame(values) {
   const { game, genres } = values;
-  return Videogames.create({ ...game })
+  return await Videogames.create({ ...game })
     .then(async (res) => {
       const favorites = genres.map((idgenre) => {
         return { id_videogame: game.id, id_genres: idgenre };

@@ -16,7 +16,7 @@ async function getVideogames(req, res) {
     const api = await fetchApiVideogames();
     res.status(200).json({ api: api, db: db, name });
   } else {
-    const db = await fetchVideogameDbbyName(name);
+    const db = fetchVideogameDbbyName(name);
     await fetchVideogameApibyName(name)
       .then((result) => {
         res.status(200).json({
