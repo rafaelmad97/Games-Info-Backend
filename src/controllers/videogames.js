@@ -73,9 +73,7 @@ async function fetchVideogameApibyName(nombre) {
     "&search=" +
     nombre.toLowerCase();
   console.log("init fetch", url);
-  await fetch(url, {
-    method: "GET",
-  });
+
   return { okay: true };
 }
 
