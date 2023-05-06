@@ -73,17 +73,10 @@ async function fetchVideogameApibyName(nombre) {
     "&search=" +
     nombre.toLowerCase();
   console.log("init fetch", url);
-  const promise = await fetch(url, {
+  await fetch(url, {
     method: "GET",
-  }).then((response) => {
-    try {
-      const data = response.json();
-      console.log(data);
-      return data;
-    } catch (exception) {
-      console.log(e);
-    }
   });
+  return { okay: true };
 }
 
 async function fetchVideogameDbbyName(nombre) {
