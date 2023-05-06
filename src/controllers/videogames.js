@@ -75,22 +75,15 @@ async function fetchVideogameApibyName(nombre) {
   console.log("init fetch", url);
   const promise = await fetch(url, {
     method: "GET",
-  })
-    .then((response) => {
-      console.log(response);
-      if (response.ok) {
-        return response.json();
-      }
-
-      throw Error("falla al conectar");
-    })
-    .then((response) => response.results.slice(0, 15))
-    .catch((error) => {
-      return { ohnow: false };
-    })
-    .finally();
-  console.log(promise);
-  return { status: "okay" };
+  }).then((response) => {
+    try {
+      const data = response.json();
+      console.log(data);
+      return data;
+    } catch (exception) {
+      console.log(e);
+    }
+  });
 }
 
 async function fetchVideogameDbbyName(nombre) {
