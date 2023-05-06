@@ -82,12 +82,13 @@ async function fetchVideogameApibyName(nombre) {
       if (response.ok) {
         return response.json();
       }
-      throw new Error(response);
+      console.log(response);
+      throw Error("falla al conectar");
     })
     .then((response) => response.results.slice(0, 15))
-    .catch((e) => ({
-      error: e,
-    }))
+    .catch((error) => {
+      return { ohnow: false };
+    })
     .finally();
 }
 
