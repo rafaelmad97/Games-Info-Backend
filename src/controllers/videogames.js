@@ -72,12 +72,9 @@ async function fetchVideogameApibyName(nombre) {
     "&search=" +
     nombre.toLowerCase();
   console.log("init fetch", url);
-  return await fetch("https://api.github.com/users/xiaotian/repos")
-    .then((resp) => resp.json())
-    .then((repos) => repos)
-    .catch((ex) => {
-      console.error(ex);
-    });
+  return await fetch("https://api.github.com/users/xiaotian/repos").then(
+    (res) => res
+  );
 }
 
 async function fetchVideogameDbbyName(nombre) {
