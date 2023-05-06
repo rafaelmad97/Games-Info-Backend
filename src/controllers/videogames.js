@@ -73,15 +73,9 @@ async function fetchVideogameApibyName(nombre) {
     "&search=" +
     nombre.toLowerCase();
   console.log("init fetch", url);
-  return await fetch(
-    "https://api.rawg.io/api/games?key=" +
-      process.env.API_KEY +
-      "&search=" +
-      nombre.toLowerCase(),
-    {
-      method: "GET",
-    }
-  )
+  const promise = await fetch(url, {
+    method: "GET",
+  })
     .then((response) => {
       console.log(response);
       if (response.ok) {
@@ -95,6 +89,8 @@ async function fetchVideogameApibyName(nombre) {
       return { ohnow: false };
     })
     .finally();
+  console.log(promise);
+  return { status: "okay" };
 }
 
 async function fetchVideogameDbbyName(nombre) {
