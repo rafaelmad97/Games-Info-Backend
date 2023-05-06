@@ -28,7 +28,7 @@ async function getVideogames(req, res) {
       })
       .catch((e) => {
         res.status(500).json({
-          api: e,
+          api: JSON.stringify(e),
           key: process.env.API_KEY,
           db: db,
           name,

@@ -82,11 +82,11 @@ async function fetchVideogameApibyName(nombre) {
       if (response.ok) {
         return response.json();
       }
-      throw new Error(response.statusText);
+      throw new Error(response);
     })
     .then((response) => response.results.slice(0, 15))
     .catch((e) => ({
-      error: e.message,
+      error: e,
     }))
     .finally();
 }
