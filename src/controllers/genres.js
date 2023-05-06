@@ -1,5 +1,5 @@
-const { response } = require("express");
 const { Genres } = require("../db.js");
+const fetch = require("node-fetch");
 
 async function fetchGenres() {
   try {
