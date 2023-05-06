@@ -18,7 +18,7 @@ async function getVideogames(req, res) {
       res.status(200).json({ api: api, db: db, name });
     } else {
       const db = await fetchVideogameDbbyName(name);
-      console.log(await fetchVideogameApibyName(name));
+
       res.status(200).json({
         key: process.env.API_KEY,
         db: db,
