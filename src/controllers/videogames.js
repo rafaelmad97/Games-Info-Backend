@@ -71,11 +71,18 @@ async function fetchVideogameApibyName(nombre) {
     process.env.API_KEY +
     "&search=" +
     nombre.toLowerCase();
-  console.log("init fetch", url);
-  return await fetch(`https://rawg.io/api/games?token&key=${apiKey}`)
-    .then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error("Error:", error));
+  try {
+    return await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => res.results);
+  } catch (error) {
+    throw Error(error);
+  }
 }
 
 async function fetchVideogameDbbyName(nombre) {
