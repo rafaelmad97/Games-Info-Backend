@@ -73,24 +73,18 @@ async function fetchVideogameApibyName(nombre) {
     {
       method: "GET",
     }
-  ).then((response) => response.json());
-  try {
-    return values.results;
-  } catch (e) {
-    return { e: "error" };
-  }
-  // return await fetch(url, { method: "GET" })
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     }
-  //     throw new Error(response.statusText);
-  //   })
-  //   .then((response) => response.results)
-  //   .catch((e) => ({
-  //     error: e.message,
-  //   }))
-  //   .finally();
+  )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .then((response) => response)
+    .catch((e) => ({
+      error: e.message,
+    }))
+    .finally();
 }
 
 async function fetchVideogameDbbyName(nombre) {

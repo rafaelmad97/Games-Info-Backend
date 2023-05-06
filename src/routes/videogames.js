@@ -12,8 +12,8 @@ async function getVideogames(req, res) {
   const { name } = req.query;
 
   if (name === undefined) {
-    const db = fetchDBVideogames();
-    const api = fetchApiVideogames();
+    const db = await fetchDBVideogames();
+    const api = await fetchApiVideogames();
     res.status(200).json({ api: api, db: db, name });
   } else {
     const db = await fetchVideogameDbbyName(name);
