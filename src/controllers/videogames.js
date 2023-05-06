@@ -71,18 +71,7 @@ async function fetchVideogameApibyName(nombre) {
     process.env.API_KEY +
     "&search=" +
     nombre.toLowerCase();
-  try {
-    return await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => res.results);
-  } catch (error) {
-    throw Error(error);
-  }
+  return url;
 }
 
 async function fetchVideogameDbbyName(nombre) {
