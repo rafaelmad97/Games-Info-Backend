@@ -13,8 +13,13 @@ async function getVideogames(req, res) {
 
   if (name === undefined) {
     const db = await fetchDBVideogames();
-    const api = await fetchApiVideogames();
-    res.status(200).json({ api: api, db: db, name });
+    const api = [];
+    for (let i = 0; i < 5; i++) {
+      const response = await fetchApiVideogames(i + 1);
+      api.push(response);
+    }
+
+    res.status(200).json({ api: api.flat(Infinity), db: db, name });
   } else {
     const db = await fetchVideogameDbbyName(name);
     const api = await fetchVideogameApibyName(name);

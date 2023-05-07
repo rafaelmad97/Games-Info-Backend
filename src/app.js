@@ -15,12 +15,7 @@ server.use(bodyParser.json({ limit: "50mb" }));
 server.use(cookieParser());
 server.use(morgan("dev"));
 server.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    process.env.ENV === "Develop"
-      ? "http://localhost:3000"
-      : "https://gamespiwebapp-production.up.railway.app/"
-  ); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",

@@ -1,9 +1,9 @@
 const { Videogames, Favorites } = require("../db.js");
 const fetch = require("node-fetch");
 
-async function fetchApiVideogames() {
+async function fetchApiVideogames(page) {
   return await fetch(
-    `https://api.rawg.io/api/games?key=${process.env.API_KEY}`,
+    `https://api.rawg.io/api/games?key=${process.env.API_KEY}&page=${page}`,
     {
       method: "GET",
     }
