@@ -1,4 +1,5 @@
 const { Videogames, Favorites } = require("../db.js");
+const { Op } = require("sequelize");
 const fetch = require("node-fetch");
 
 async function fetchApiVideogames(page) {
@@ -22,9 +23,21 @@ async function fetchApiVideogames(page) {
 }
 
 async function fetchDBVideogames() {
-  await Videogames.findAll()
-    .then((result) => {
-      return result;
+  return await Videogames.findAll()
+    .then(async (videogames) => {
+      let values = [];
+      for (let i = 0; i < videogames.length; i++) {
+        const fav = await Favorites.findAll({
+          where: {
+            id_videogame: videogames[i].dataValues.id,
+          },
+        });
+        values.push({
+          videogames: videogames[i],
+          fav,
+        });
+      }
+      return values;
     })
     .catch(() => ({
       error: "error al obtener los datos en la base de datos",
@@ -58,8 +71,20 @@ async function fetchDbVideogamesbyid(id) {
       id: id,
     },
   })
-    .then((result) => {
-      return result;
+    .then(async (videogames) => {
+      let values = [];
+      for (let i = 0; i < videogames.length; i++) {
+        const fav = await Favorites.findAll({
+          where: {
+            id_videogame: videogames[i].dataValues.id,
+          },
+        });
+        values.push({
+          videogames: videogames[i],
+          fav,
+        });
+      }
+      return values;
     })
     .catch(() => ({
       error: "error al obtener los datos en la base de datos",
@@ -68,41 +93,67 @@ async function fetchDbVideogamesbyid(id) {
 }
 
 async function fetchVideogameApibyName(nombre) {
-  return await fetch(
-    `https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${nombre}`,
-    {
-      method: "GET",
-    }
-  )
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
+  if (nombre.length !== 0) {
+    return await fetch(
+      `https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${nombre}`,
+      {
+        method: "GET",
       }
-      throw new Error(response.statusText);
-    })
-    .then((response) => response)
-    .catch((e) => ({
-      error: e.message,
-    }))
-    .finally();
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
+      .then((response) => {
+        return {
+          ...response,
+          results: response.results.slice(0, 15),
+        };
+      })
+      .catch((e) => ({
+        error: e.message,
+      }))
+      .finally();
+  } else {
+    return undefined;
+  }
 }
 
 async function fetchVideogameDbbyName(nombre) {
-  return await Videogames.findAll(
-    {
-      where: {
-        nombre: `${nombre.toLowerCase()}`,
+  if (nombre.length !== 0) {
+    return await Videogames.findAll(
+      {
+        where: {
+          nombre: {
+            [Op.like]: `%${nombre.toLowerCase()}%`,
+          },
+        },
       },
-    },
-    { limit: 15 }
-  )
-    .then((result) => {
-      return result;
-    })
-    .catch(() => ({
-      error: "error al obtener los datos en la base de datos",
-    }))
-    .finally();
+      { limit: 15 }
+    )
+      .then(async (videogames) => {
+        let values = [];
+        for (let i = 0; i < videogames.length; i++) {
+          const fav = await Favorites.findAll({
+            where: {
+              id_videogame: videogames[i].dataValues.id,
+            },
+          });
+          values.push({
+            videogames: videogames[i],
+            fav,
+          });
+        }
+        return values;
+      })
+      .catch(() => ({
+        error: "error al obtener los datos en la base de datos",
+      }));
+  } else {
+    return undefined;
+  }
 }
 
 async function createVideoGame(values) {
