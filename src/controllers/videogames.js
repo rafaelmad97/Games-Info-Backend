@@ -161,7 +161,7 @@ async function createVideoGame(values) {
   return await Videogames.create({ ...game })
     .then(async (res) => {
       const favorites = genres.map((idgenre) => {
-        return { id_videogame: game.id, id_genres: idgenre };
+        return { id_videogame: res.dataValues.id, id_genres: idgenre };
       });
       await Favorites.bulkCreate(favorites);
       return {
